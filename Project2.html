@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markov Chain Calculator</title>
+    <style>
+        body {
+            font-family: Comic Sans MS, Helvetica, cursive;
+            background-color: black;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        h1, h2 {
+            margin: 0.5em 0;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        input, button {
+            padding: 0.5em;
+            margin: 0.5em;
+            font-size: 1em;
+        }
+        input {
+            width: 200px;
+        }
+        button {
+            background-color: #444;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #555;
+        }
+        #container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 1em;
+        }
+        #container > div {
+            background-color: rgb(0, 0, 0);
+            color: rgb(255, 255, 255);
+            font-size: 25px;
+            margin: 3px;
+            padding: 3px;
+            width: 25px;
+            height: 50px;
+            text-align: center;
+        }
+        #container > div a {
+            color: rgb(255, 255, 255);
+            text-decoration: none;
+            display: block;
+            width: 100%;
+            height: 100%;
+            line-height: 50px;
+        }
+        .matrix-row {
+            display: flex;
+        }
+        .matrix-row input {
+            margin: 2px;
+        }
+    </style>
+</head>
+<body>
+    <center>
+
+        <div id="container">
+            <div><a href="indexex.html">0</a></div>
+            <div><a href="Project5.html">1</a></div>
+            <div><a href="Project1.html">2</a></div>
+            <div><a href="Project2.html">3</a></div>
+            <div><a href="Project3.html">4</a></div>
+            <div><a href="Project4.html">5</a></div>
+        </div>
+
+        <h1>Markov Chain Calculator</h1>
+        <h2>Calculate Markov Chain Probabilities</h2>
+        
+        <form id="markovForm">
+            <label for="states">Number of states:</label>
+            <input type="number" id="states" name="states" required>
+            <button type="button" onclick="generateMatrix()">Generate Matrix</button>
+        </form>
+        <div id="matrixContainer"></div>
+        <button type="button" onclick="calculateMarkov()">Calculate</button>
+        <h2 id="result"></h2>
+    </center>
+
+    <script>
+        function generateMatrix() {
+            const numStates = parseInt(document.getElementById('states').value);
+            const matrixContainer = document.getElementById('matrixContainer');
+            matrixContainer.innerHTML = '';
+
+            for (let i = 0; i < numStates; i++) {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'matrix-row';
+                for (let j = 0; j < numStates; j++) {
+                    const input = document.createElement('input');
+                    input.type = 'number';
+                    input.step = '0.01';
+                    input.required = true;
+                    rowDiv.appendChild(input);
+                }
+                matrixContainer.appendChild(rowDiv);
+            }
+        }
+
+        function calculateMarkov() {
+            const numStates = parseInt(document.getElementById('states').value);
+            const matrixContainer = document.getElementById('matrixContainer');
+            const matrix = [];
+
+            const rows = matrixContainer.getElementsByClassName('matrix-row');
+            for (let i = 0; i < rows.length; i++) {
+                const row = rows[i];
+                const inputs = row.getElementsByTagName('input');
+                const rowValues = [];
+                for (let j = 0; j < inputs.length; j++) {
+                    rowValues.push(parseFloat(inputs[j].value));
+                }
+                matrix.push(rowValues);
+            }
+
+            const initialState = Array(numStates).fill(0);
+            initialState[0] = 1; // Initial state, you can change this as needed
+
+            let currentState = initialState;
+            for (let step = 0; step < 10; step++) { // Number of steps, you can change this as needed
+                const nextState = Array(numStates).fill(0);
+                for (let i = 0; i < numStates; i++) {
+                    for (let j = 0; j < numStates; j++) {
+                        nextState[j] += currentState[i] * matrix[i][j];
+                    }
+                }
+                currentState = nextState;
+            }
+
+            const resultElement = document.getElementById('result');
+            resultElement.innerText = `Probabilities after 10 steps: ${currentState.map(p => p.toFixed(6)).join(', ')}`;
+        }
+    </script>
+</body>
+</html>

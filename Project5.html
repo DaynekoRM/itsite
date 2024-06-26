@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project 5 - Description</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000000;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh; 
+        }
+        h1 {
+            margin-top: 20px;
+        }
+        #container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        #container > div {
+            background-color: black;
+            color: white;
+            font-size: 25px;
+            margin: 3px;
+            padding: 3px;
+            width: 25px;
+            height: 50px;
+            text-align: center;
+        }
+        a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            width: 100%;
+            height: 100%;
+            line-height: 50px; 
+        }
+        .description {
+            max-width: 800px;
+            text-align: left;
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            color: #000000;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: auto; 
+        }
+        pre {
+            white-space: pre-wrap; 
+        }
+    </style>
+</head>
+<body>
+
+    <div id="container">
+        <div><a href="indexex.html">0</a></div>
+        <div><a href="Project5.html">1</a></div>
+        <div><a href="Project1.html">2</a></div>
+        <div><a href="Project2.html">3</a></div>
+        <div><a href="Project3.html">4</a></div>
+        <div><a href="Project4.html">5</a></div>
+    </div>
+
+    <h1>Jef Raskin</h1>
+    
+    <div class="description">
+        <pre>
+using System.IO;
+using System; 
+
+class AJefRaskin
+{
+    static void Main(string[] args)
+    {
+        System.Console.WriteLine("Hello, AJefraskin");
+        DirectoryContent();
+    }
+
+    static void AFileCopy(FileInfo f)
+    {
+        string s = "";
+        s = "d:" + "\\" + f.DirectoryName.Substring(3);
+        ATestDir(s);
+        s += '\\' + f.Name;
+        try
+        {
+            f.CopyTo(s, true);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("*** Ошибка от AJefRaskin.cs \n\r" + ex + "\n\r***");
+        }
+    }
+
+    static void DirectoryContent()
+    {
+        DirectoryInfo oD = new DirectoryInfo(@"D:\0\1\2\3");
+        Console.WriteLine("DIR:{0}\n", oD.FullName.ToString());
+
+        foreach (FileInfo f in oD.GetFiles())
+        {
+            Console.WriteLine("Filename:{0}", f.FullName);
+            AFileCopy(f);
+        }
+
+        foreach (DirectoryInfo d in oD.GetDirectories())
+        {
+            AProcessDirs(d);
+        }
+    }
+
+    static void AProcessDirs(DirectoryInfo oD)
+    {
+        foreach (FileInfo f in oD.GetFiles())
+        {
+            Console.WriteLine("Filename: {0}", f.FullName);
+            AFileCopy(f);
+        }
+        foreach (DirectoryInfo d in oD.GetDirectories())
+        {
+            AProcessDirs(d);
+        }
+    }
+
+    static void ATestDir(string s)
+    {
+        Console.WriteLine("Hello ATestDir - " + s.ToString());
+
+        DirectoryInfo d = new DirectoryInfo(s);
+
+        if (d.Exists) return;
+        d.Create();
+        return;
+    }
+}
+        </pre>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caesar Cipher Decryptor</title>
+    <style>
+        body {
+            font-family: Comic Sans MS, Helvetica, cursive;
+            background-color: black;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        h1, h2 {
+            margin: 0.5em 0;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        input, button {
+            padding: 0.5em;
+            margin: 0.5em;
+            font-size: 1em;
+        }
+        input {
+            width: 200px;
+        }
+        button {
+            background-color: #444;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #555;
+        }
+        #container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 1em;
+        }
+        #container > div {
+            background-color: rgb(0, 0, 0);
+            color: rgb(255, 255, 255);
+            font-size: 23px;
+            margin: 3px;
+            padding: 3px;
+            width: 25px;
+            height: 50px;
+            text-align: center;
+        }
+        #container > div a {
+            color: rgb(255, 255, 255);
+            text-decoration: none;
+            display: block;
+            width: 100%;
+            height: 100%;
+            line-height: 50px;
+        }
+    </style>
+</head>
+<body>
+    <center>
+
+        <div id="container">
+            <div><a href="indexex.html">0</a></div>
+            <div><a href="Project5.html">1</a></div>
+            <div><a href="Project1.html">2</a></div>
+            <div><a href="Project2.html">3</a></div>
+            <div><a href="Project3.html">4</a></div>
+            <div><a href="Project4.html">5</a></div>
+        </div>
+
+        <h1>Caesar Cipher Decryptor</h1>
+        <h2>Decrypt a Caesar Cipher</h2>
+        
+        <form id="caesarForm">
+            <label for="ciphertext">Ciphertext:</label>
+            <input type="text" id="ciphertext" name="ciphertext" required>
+            <label for="shift">Shift (0-25):</label>
+            <input type="number" id="shift" name="shift" min="0" max="25" required>
+            <button type="button" onclick="decryptCaesar()">Decrypt</button>
+        </form>
+        <h2 id="result"></h2>
+    </center>
+
+    <script>
+        function decryptCaesar() {
+            const ciphertext = document.getElementById('ciphertext').value;
+            const shift = parseInt(document.getElementById('shift').value);
+            let result = '';
+
+            for (let i = 0; i < ciphertext.length; i++) {
+                const char = ciphertext.charCodeAt(i);
+
+                if (char >= 65 && char <= 90) {
+                    // Uppercase letters
+                    result += String.fromCharCode((char - 65 - shift + 26) % 26 + 65);
+                } else if (char >= 97 && char <= 122) {
+                    // Lowercase letters
+                    result += String.fromCharCode((char - 97 - shift + 26) % 26 + 97);
+                } else {
+                    // Non-alphabetic characters
+                    result += ciphertext.charAt(i);
+                }
+            }
+
+            document.getElementById('result').innerText = `Decrypted text: ${result}`;
+        }
+    </script>
+</body>
+</html>
